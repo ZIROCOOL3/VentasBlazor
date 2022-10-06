@@ -1,0 +1,248 @@
+﻿@page "/Producto"
+@using VentasWeb.Components
+@using VentasWeb.Data
+@using VentasWeb.Models
+@inject IMysqlDataAccess _data
+@inject IConfiguration _config
+
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <Sidebar/>
+        
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+
+                <Topbar/>
+                
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+                            <!-- DataTales Example -->
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3 bg-second-primary">
+                                    <h6 class="m-0 font-weight-bold text-white">Lista de Productos</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <button class="btn btn-success" data-toggle="modal" data-target="#modalData"><i class="fas fa-plus-circle"></i> Nuevo Producto</button>
+                                        </div>
+                                    </div>
+                                    <hr/>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                                <table class="table table-bordered" id="tbdata" cellspacing="0" style="width:100%">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Id</th>
+                                                            <th>Imagen</th>
+                                                            <th>Codigo Barra</th>
+                                                            <th>Marca</th>
+                                                            <th>Descripcion</th>
+                                                            <th>Categoria</th>
+                                                            <th>Stock</th>
+                                                            <th>Precio</th>
+                                                            <th>Estado</th>
+                                                            <th>Acciones</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach (var prod in productos)
+                                                        {
+                                                            <tr>
+                                                                <td>@prod.IdProducto</td>
+                                                                <td><img style="height:60px ;" src="@prod.UrlImagen" class="rounded mx-auto d-block" /></td>
+                                                                <td>@prod.CodigoBarra</td>
+                                                                <td>@prod.Marca</td>
+                                                                <td>@prod.Descripcion</td>
+                                                                <td>@prod.IdCategoria</td>
+                                                                <td>@prod.Stock</td>
+                                                                <td>@prod.Precio</td>
+                                                                @if(@prod.EsActivo==1)
+                                                                {
+                                                                    <td><span class="badge badge-info">Activo</span></td>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <td><span class="badge badge-danger">Inactivo</span></td>
+                                                                }
+                                                                <td>
+                                                                    <button class="btn btn-primary btn-sm">
+                                                                        <i class="fas fa-pencil-alt"></i>
+                                                                    </button>
+                                                                    <button class="btn btn-danger btn-sm">
+                                                                        <i class="fas fa-trash-alt"></i>
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+                                                           
+                                                        }
+
+
+
+
+
+                                                        
+                                                        
+                                                    </tbody>
+                                                </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                    <!--  Modal-->
+                    <div class="modal fade" id="modalData" tabindex="-1" role="dialog"aria-hidden="true" data-backdrop="static">
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h6>Detalle Producto</h6>
+                                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">×</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form>
+                                        <input type="hidden" value="0" id="txtId">
+                                        <div class="row">
+                                            <div class="col-sm-8">
+                                                <div class="form-row">
+                                                        <div class="form-group col-sm-6">
+                                                            <label for="txtCodigoBarra">Codigo Barra</label>
+                                                            <input type="text" class="form-control form-control-sm input-validar" id="txtCodigoBarra" name="Codigo Barra">
+                                                        </div>
+                                                        <div class="form-group col-sm-6">
+                                                            <label for="txtMarca">Marca</label>
+                                                            <input type="text" class="form-control form-control-sm input-validar" id="txtMarca" name="Marca">
+                                                        </div>
+                                                </div>
+                                                <div class="form-row">
+                                                        <div class="form-group col-sm-12">
+                                                            <label for="txtDescripcion">Descripcion</label>
+                                                            <input type="text" class="form-control form-control-sm input-validar" id="txtDescripcion" name="Descripcion">
+                                                        </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="form-group col-sm-6">
+                                                        <label for="cboCategoria">Categoria</label>
+                                                        <select class="form-control form-control-sm" id="cboCategoria">
+                                                            @foreach(var item in categoria)
+                                                            {
+                                                                <option value="@item.IdCategoria">@item.Descripcion</option>    
+                                                            }
+                                                            
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group col-sm-6">
+                                                        <label for="txtStock">Stock</label>
+                                                        <input type="text" class="form-control form-control-sm input-validar" id="txtStock" name="Stock">
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="form-group col-sm-6">
+                                                        <label for="txtPrecio">Precio</label>
+                                                        <input type="text" class="form-control form-control-sm input-validar" id="txtPrecio" name="Precio">
+                                                    </div>
+                                                    <div class="form-group col-sm-6">
+                                                        <label for="cboEstado">Estado</label>
+                                                        <select class="form-control form-control-sm" id="cboEstado">
+                                                            <option value="1">Activo</option>
+                                                            <option value="0">No Activo</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="form-group col-sm-6">
+                                                        <label for="txtImagen">Imagen</label>
+                                                        <input class="form-control-file" type="file" id="txtImagen" @bind="@Imagen" @onclick="@CargarImagen"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <img id="imgProducto" style="max-width:200px;" src="@ImagenPrevia" class="rounded mx-auto d-block" alt="...">
+                                            </div>
+
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-primary btn-sm" type="button" data-dismiss="modal" id="btnGuardar">Guardar</button>
+                                    <button class="btn btn-danger btn-sm" type="button" data-dismiss="modal">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- /.container-fluid -->
+
+            </div>
+            <!-- End of Main Content -->
+
+            <Footer/>
+           
+
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+</body>
+
+@code {
+    List<Productos> productos = new List<Productos>();
+    List<Categorias> categoria = new List<Categorias>();
+    string ImagenPrevia = "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=300";
+    string Imagen = "";
+    int TotalVentas = 0;
+    decimal TotalIngresos = 0;
+    int TotalProductos = 0;
+    string Descripcion = "";
+    int Estado = 1;
+
+    protected override async Task OnInitializedAsync()
+    {
+        CargarProductos();
+        CargarCategorias();
+
+    }
+    private void CargarImagen()
+    {
+        //ImagenPrevia = Imagen;
+    }
+    private async void CargarProductos()
+    {
+        string sql="SELECT * FROM producto";
+        productos=await _data.TraerTodasCategorias<Productos,dynamic>(sql,new{},
+        _config.GetConnectionString("MySQLConnection"));
+    }
+
+    private async void CargarCategorias()
+    {
+        string sql="SELECT * FROM categoria";
+        categoria=await _data.TraerTodasCategorias<Categorias,dynamic>(sql,new{},
+        _config.GetConnectionString("MySQLConnection"));
+
+    }
+    private async void GuardarCategoria()
+    {
+        //Productos producto = new Productos();
+        //producto.Descripcion = Descripcion;
+        //producto.EsActivo = Estado;
+        //producto.FechaRegistro = DateTime.Now;
+
+        //string sql="INSERT into categoria (descripcion,esActivo,fechaRegistro) " +
+        //            "VALUES (@Descripcion,@EsActivo,@FechaRegistro);";
+        //    await _data.GuardarDatos(sql,producto,_config.GetConnectionString("MySqlConnection"));
+        //CargarProductos();
+    }
+
+}

@@ -1,0 +1,96 @@
+﻿
+<!-- Sidebar -->
+<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+    <!-- Sidebar - Brand -->
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+        <div class="sidebar-brand-icon">
+            <i class="fas fa-desktop"></i>
+        </div>
+        <div class="sidebar-brand-text mx-3">MI TIENDA</div>
+    </a>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider my-0">
+
+    <!-- Nav Item - Dashboard -->
+    <li class="nav-item active">
+        <a class="nav-link" href="/">
+            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <span>Dashboard</span></a>
+    </li>
+
+    <!-- Nav Item - Admnistración Collapse Menu -->
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseAdministracion"
+            aria-expanded="true" aria-controls="collapseAdministracion">
+            <i class="fas fa-fw fa-cog"></i>
+            <span>Admnistración</span>
+        </a>
+        <div id="collapseAdministracion" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item" href="usuarios.html">Usuarios</a>
+                <a class="collapse-item" href="negocio.html">Negocio</a>
+            </div>
+        </div>
+    </li>
+
+    <!-- Nav Item - Inventario Collapse Menu -->
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseInventario"
+            aria-expanded="true" aria-controls="collapseInventario">
+            <i class="fas fa-fw fa-clipboard-list"></i>
+            <span>Inventario</span>
+        </a>
+        <div id="collapseInventario" class="collapse" aria-labelledby="headingInventario" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item" href="/Categoria">Categorias</a>
+                <a class="collapse-item" href="/Producto">Productos</a>
+            </div>
+        </div>
+    </li>
+
+    <!-- Nav Item - Venta Collapse Menu -->
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseVenta"
+            aria-expanded="true" aria-controls="collapseVenta">
+            <i class="fas fa-fw fa-tags"></i>
+            <span>Ventas</span>
+        </a>
+        <div id="collapseVenta" class="collapse" aria-labelledby="headingInventario" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item" href="nueva_venta.html">Nueva Venta</a>
+                <a class="collapse-item" href="historial_venta.html">Historial Venta</a>
+            </div>
+        </div>
+    </li>
+
+        <!-- Nav Item - Reportes Collapse Menu -->
+        <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseReportes"
+            aria-expanded="true" aria-controls="collapseReportes">
+            <i class="fas fa-fw fa-chart-area"></i>
+            <span>Reportes</span>
+        </a>
+        <div id="collapseReportes" class="collapse" aria-labelledby="headingInventario" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item" href="reporte_venta.html">Reporte de Ventas</a>
+            </div>
+        </div>
+    </li>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider">
+
+    <!-- Sidebar Toggler (Sidebar) -->
+    <div class="text-center d-none d-md-inline">
+        <button class="rounded-circle border-0" id="sidebarToggle"></button>
+    </div>
+</ul>
+<!-- End of Sidebar -->
+  
+
+
+@code {
+
+}

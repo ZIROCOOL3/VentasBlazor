@@ -1,0 +1,172 @@
+﻿@page "/Categoria"
+@using VentasWeb.Components
+@using VentasWeb.Data
+@using VentasWeb.Models
+
+@inject IMysqlDataAccess _data
+@inject IConfiguration _config
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+        <Sidebar/>
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+            <!-- Main Content -->
+            <div id="content">
+                <Topbar/>
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+                            <!-- DataTales Example -->
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3 bg-second-primary">
+                                    <h6 class="m-0 font-weight-bold text-white">Lista de Categorias</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <button class="btn btn-success" data-toggle="modal" data-target="#modalData"><i class="fas fa-plus-circle"></i> Nueva Categoria</button>
+                                        </div>
+                                    </div>
+                                    <hr/>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                                <table class="table table-bordered" id="tbdata" cellspacing="0" style="width:100%" Items="@categorias">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Id</th>
+                                                            <th>Descripcion</th>
+                                                            <th>Estado</th>
+                                                            <th>Acciones</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody >
+                                                        @foreach (var cat in categorias)
+                                                        {
+                                                         <tr>
+                                                            <td>@cat.IdCategoria</td>
+                                                            <td>@cat.Descripcion</td>
+                                                             @if(@cat.EsActivo==1)
+                                                                {
+                                                                    <td><span class="badge badge-info">Activo</span></td>
+                                                                }
+                                                              else
+                                                                {
+                                                                    <td><span class="badge badge-danger">Inactivo</span></td>
+                                                                }
+
+                                                            
+                                                            <td>
+                                                                <button class="btn btn-primary btn-sm">
+                                                                    <i class="fas fa-pencil-alt"></i>
+                                                                </button>
+                                                                <button class="btn btn-danger btn-sm">
+                                                                    <i class="fas fa-trash-alt"></i>
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                        }
+                                                        
+                                                        
+                                                    </tbody>
+                                                </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                    <!--  Modal-->
+                    <div class="modal fade" id="modalData" tabindex="-1" role="dialog"aria-hidden="true" data-backdrop="static">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h6>Detalle Categoria</h6>
+                                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">×</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form>
+                                        <input type="hidden" value="0" id="txtId">
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="form-row">
+                                                        <div class="form-group col-sm-6">
+                                                            <label for="txtDescripcion">Descripcion</label>
+                                                            <input type="text" class="form-control form-control-sm" id="txtDescripcion" @bind="@Descripcion">
+                                                        </div>
+                                                        <div class="form-group col-sm-6">
+                                                            <label for="cboEstado">Estado</label>
+                                                            <select class="form-control form-control-sm" id="cboEstado" @bind="@Estado">
+                                                                <option value="1">Activo</option>
+                                                                <option value="0">No Activo</option>
+                                                            </select>
+                                                        </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-primary btn-sm" type="button" id="btnGuardar" data-dismiss="modal" @onclick="@GuardarCategoria">Guardar</button>
+                                    <button class="btn btn-danger btn-sm" type="button" data-dismiss="modal">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- /.container-fluid -->
+
+            </div>
+            <!-- End of Main Content -->
+
+            <Footer/>
+           
+
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+
+
+  
+    
+
+</body>
+
+@code {
+    List<Categorias> categorias = new List<Categorias>();
+    int TotalVentas = 0;
+    decimal TotalIngresos = 0;
+    int TotalProductos = 0;
+    string Descripcion = "";
+    int Estado = 1;
+
+    protected override async Task OnInitializedAsync()
+    {
+        CargarCategorias();
+
+    }
+    private async void CargarCategorias()
+    {
+        string sql="SELECT * FROM categoria";
+        categorias=await _data.TraerTodasCategorias<Categorias,dynamic>(sql,new{},
+        _config.GetConnectionString("MySQLConnection"));
+    }
+    private async void GuardarCategoria()
+    {
+        Categorias categoria = new Categorias();
+        categoria.Descripcion = Descripcion;
+        categoria.EsActivo = Estado;
+        categoria.FechaRegistro = DateTime.Now;
+
+        string sql="INSERT into categoria (descripcion,esActivo,fechaRegistro) " +
+                    "VALUES (@Descripcion,@EsActivo,@FechaRegistro);";
+            await _data.GuardarDatos(sql,categoria,_config.GetConnectionString("MySqlConnection"));
+        CargarCategorias();
+    }
+
+}
