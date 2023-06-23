@@ -1,0 +1,109 @@
+﻿@page "/login"
+@using VentasWeb.Data
+@using VentasWeb.Models
+@inject IMysqlDataAccess _data
+@inject IConfiguration _config
+@inject NavigationManager Navigation
+<body class="bg-gradient-info">
+
+    <div class="container">
+
+        <!-- Outer Row -->
+        <div class="row justify-content-center">
+
+            <div class="col-xl-10 col-lg-12 col-md-9">
+
+                <div class="card o-hidden border-0 shadow-lg my-5">
+                    <div class="card-body p-0">
+                        <!-- Nested Row within Card Body -->
+                        <div class="row">
+                            <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
+                            <div class="col-lg-6">
+                                <div class="p-5">
+                                    <div class="text-center">
+                                        <h1 class="h4 text-gray-900 mb-4">Bienvenido</h1>
+                                    </div>
+                                    <form class="user">
+                                        <div class="form-group">
+                                            <input type="email" class="form-control form-control-user" placeholder="Correo" asp-for="Correo" @bind=@Correo>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="password" class="form-control form-control-user" placeholder="Contraseña" asp-for="Clave" @bind=@Password>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="custom-control custom-checkbox small">
+                                                <input type="checkbox" class="custom-control-input" id="chkMantenerSesion" asp-for="MantenerSesion">
+                                                <label class="custom-control-label" for="chkMantenerSesion">Mantener Sesión</label>
+                                            </div>
+                                        </div>
+
+                                       
+                                            <div class="form-group" >
+                                                <div class="alert alert-danger @OcultarAlerta" role="alert" >
+                                                    @Mensaje
+                                                </div>
+                                            </div>
+                                       
+                                        
+                                        
+										<a class="btn btn-primary btn-user btn-block" href="" @onclick="@Loguearse">Ingresar</a>
+                                        <!-- <button type="submit" class="btn btn-primary btn-user btn-block">
+                                            Ingresar 
+                                        </button> -->
+                                    </form>
+                                    <hr>
+                                    <div class="text-center">
+                                        <a class="small" href="forgot-password.html">¿Olvidó su contraseña?</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+</body>
+
+@code
+{
+    List<Usuarios> usuario = new List<Usuarios>();
+
+    string Correo = "";
+    string Password = "";
+    string Pagina = "";
+    string Mensaje = "";
+    string OcultarAlerta = "d-none";
+    protected override async Task OnInitializedAsync()
+    {
+
+    }
+    private async void Loguearse()
+    {
+        string sql="SELECT clave FROM usuario where correo='"+Correo+"'";
+        usuario=await _data.TraerDatos <Usuarios,dynamic>(sql,new{},
+        _config.GetConnectionString("MySQLConnection"));
+
+        foreach (var item in usuario)
+        {
+            if (item.Clave==Password)
+            {
+                Navigation.NavigateTo("/index");
+            }
+            else
+            {
+                OcultarAlerta = "";
+                Mensaje="Correo O contraseña Incorrecta";
+            }
+        }
+    }
+
+}
+
+
+}

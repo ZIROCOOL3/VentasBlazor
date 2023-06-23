@@ -153,7 +153,7 @@
     private async void CargarCategorias()
     {
         string sql="SELECT * FROM categoria";
-        categorias=await _data.TraerTodasCategorias<Categorias,dynamic>(sql,new{},
+        categorias=await _data.TraerDatos<Categorias,dynamic>(sql,new{},
         _config.GetConnectionString("MySQLConnection"));
     }
     private async void GuardarCategoria()

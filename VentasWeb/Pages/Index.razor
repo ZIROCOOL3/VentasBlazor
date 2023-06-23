@@ -1,5 +1,5 @@
 ﻿@page "/"
-
+@using Masa.Blazor
 
 @using VentasWeb.Components
 @using VentasWeb.Data
@@ -121,8 +121,12 @@
                                 </div>
                                 <!-- Card Body -->
                                 <div class="card-body">
-                                    <div class="chart-area" style="height: 350px !important;">
+                                    @*<div class="chart-area" style="height: 350px !important;">
                                         <canvas id="charVentas"></canvas>
+                                    </div>*@
+                                    <div class="d-flex align-center justify-center">
+                                        <MECharts Option="_option" Width="@("100%")">
+                                        </MECharts>
                                     </div>
                                 </div>
                             </div>
@@ -171,7 +175,7 @@
     protected override async Task OnInitializedAsync()
     {
         string sql="SELECT * FROM venta";
-        ventas=await _data.TraerTodasVentas<Ventas,dynamic>(sql,new{},
+        ventas=await _data.TraerDatos<Ventas,dynamic>(sql,new{},
         _config.GetConnectionString("MySQLConnection"));
 
         foreach (var item in ventas)
@@ -181,13 +185,39 @@
         }
 
         sql="SELECT * FROM producto";
-        productos=await _data.TraerTodosProductos<Productos,dynamic>(sql,new{},
+        productos=await _data.TraerDatos<Productos,dynamic>(sql,new{},
         _config.GetConnectionString("MySQLConnection"));
         
         foreach (var item in ventas)
         {
             TotalProductos++;
         }
-
     }
+    private object _option = new
+    {
+        Title = new
+        {
+            Left = "center",
+            Text = "Ventas"
+        },
+        Tooltip = new { },
+        Legend = new
+        {
+            Data = new[] { "Ventas" }
+        },
+        XAxis = new
+        {
+            Data = new[] { "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado","Domingo" }
+        },
+        YAxis = new { },
+        Series = new[]
+        {
+            new 
+            {
+                Name = "sales",
+                Type= "bar",
+                Data= new []{ 5, 20, 36, 10, 10, 20 ,50}
+            }
+        }
+    };
 }

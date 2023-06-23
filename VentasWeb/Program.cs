@@ -8,7 +8,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<IMysqlDataAccess, MySqlDataAccess>();
-
+// Add services to the container.
+builder.Services.AddMasaBlazor();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

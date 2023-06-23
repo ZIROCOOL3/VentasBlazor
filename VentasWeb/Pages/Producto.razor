@@ -116,23 +116,23 @@
                                                 <div class="form-row">
                                                         <div class="form-group col-sm-6">
                                                             <label for="txtCodigoBarra">Codigo Barra</label>
-                                                            <input type="text" class="form-control form-control-sm input-validar" id="txtCodigoBarra" name="Codigo Barra">
+                                                        <input type="text" class="form-control form-control-sm input-validar" id="txtCodigoBarra" name="Codigo Barra" @bind="@CodigoBarra">
                                                         </div>
                                                         <div class="form-group col-sm-6">
                                                             <label for="txtMarca">Marca</label>
-                                                            <input type="text" class="form-control form-control-sm input-validar" id="txtMarca" name="Marca">
+                                                        <input type="text" class="form-control form-control-sm input-validar" id="txtMarca" name="Marca" @bind="@Marca">
                                                         </div>
                                                 </div>
                                                 <div class="form-row">
                                                         <div class="form-group col-sm-12">
                                                             <label for="txtDescripcion">Descripcion</label>
-                                                            <input type="text" class="form-control form-control-sm input-validar" id="txtDescripcion" name="Descripcion">
+                                                        <input type="text" class="form-control form-control-sm input-validar" id="txtDescripcion" name="Descripcion" @bind="@Descripcion">
                                                         </div>
                                                 </div>
                                                 <div class="form-row">
                                                     <div class="form-group col-sm-6">
                                                         <label for="cboCategoria">Categoria</label>
-                                                        <select class="form-control form-control-sm" id="cboCategoria">
+                                                        <select class="form-control form-control-sm" id="cboCategoria" @bind="@IdCategoria">
                                                             @foreach(var item in categoria)
                                                             {
                                                                 <option value="@item.IdCategoria">@item.Descripcion</option>    
@@ -142,17 +142,17 @@
                                                     </div>
                                                     <div class="form-group col-sm-6">
                                                         <label for="txtStock">Stock</label>
-                                                        <input type="text" class="form-control form-control-sm input-validar" id="txtStock" name="Stock">
+                                                        <input type="text" class="form-control form-control-sm input-validar" id="txtStock" name="Stock" @bind="@Stock">
                                                     </div>
                                                 </div>
                                                 <div class="form-row">
                                                     <div class="form-group col-sm-6">
                                                         <label for="txtPrecio">Precio</label>
-                                                        <input type="text" class="form-control form-control-sm input-validar" id="txtPrecio" name="Precio">
+                                                        <input type="text" class="form-control form-control-sm input-validar" id="txtPrecio" name="Precio" @bind="@Precio">
                                                     </div>
                                                     <div class="form-group col-sm-6">
                                                         <label for="cboEstado">Estado</label>
-                                                        <select class="form-control form-control-sm" id="cboEstado">
+                                                        <select class="form-control form-control-sm" id="cboEstado" @bind="@Estado">
                                                             <option value="1">Activo</option>
                                                             <option value="0">No Activo</option>
                                                         </select>
@@ -173,7 +173,7 @@
                                     </form>
                                 </div>
                                 <div class="modal-footer">
-                                    <button class="btn btn-primary btn-sm" type="button" data-dismiss="modal" id="btnGuardar">Guardar</button>
+                                    <button class="btn btn-primary btn-sm" type="button" data-dismiss="modal" id="btnGuardar" @onclick="@GuardarProducto">Guardar</button>
                                     <button class="btn btn-danger btn-sm" type="button" data-dismiss="modal">Cancel</button>
                                 </div>
                             </div>
@@ -202,10 +202,16 @@
     List<Categorias> categoria = new List<Categorias>();
     string ImagenPrevia = "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=300";
     string Imagen = "";
+    string CodigoBarra = "";
+    string Marca = "";
+    string Descripcion = "";
+    int Stock = 0;
+    decimal Precio = 0;
+    int IdCategoria = 0;
     int TotalVentas = 0;
     decimal TotalIngresos = 0;
     int TotalProductos = 0;
-    string Descripcion = "";
+
     int Estado = 1;
 
     protected override async Task OnInitializedAsync()
@@ -220,29 +226,41 @@
     }
     private async void CargarProductos()
     {
-        string sql="SELECT * FROM producto";
-        productos=await _data.TraerTodasCategorias<Productos,dynamic>(sql,new{},
+        //string sql = "SELECT P.idProducto,P.codigoBarra,P.marca,P.descripcion,C.descripcion as Categoria,P.stock,P.urlImagen,P.precio,P.esActivo  FROM dbventa.producto P "+
+        //                "INNER JOIN categoria C ON C.idCategoria = P.idCategoria";
+        string sql = "SELECT * FROM producto";
+        productos=await _data.TraerDatos<Productos,dynamic>(sql,new{},
         _config.GetConnectionString("MySQLConnection"));
+
+
+
     }
 
     private async void CargarCategorias()
     {
         string sql="SELECT * FROM categoria";
-        categoria=await _data.TraerTodasCategorias<Categorias,dynamic>(sql,new{},
+        categoria=await _data.TraerDatos<Categorias,dynamic>(sql,new{},
         _config.GetConnectionString("MySQLConnection"));
 
     }
-    private async void GuardarCategoria()
+    private async void GuardarProducto()
     {
-        //Productos producto = new Productos();
-        //producto.Descripcion = Descripcion;
-        //producto.EsActivo = Estado;
-        //producto.FechaRegistro = DateTime.Now;
+        Productos producto = new Productos();
+        producto.CodigoBarra = CodigoBarra;
+        producto.Marca = Marca;
+        producto.Descripcion = Descripcion;
+        producto.IdCategoria = IdCategoria;
+        producto.Stock = Stock;
+        producto.UrlImagen = "";
+        producto.NombreImagen = "";
+        producto.Precio = Precio;
+        producto.EsActivo = Estado;
+        producto.FechaRegistro = DateTime.Now;
 
-        //string sql="INSERT into categoria (descripcion,esActivo,fechaRegistro) " +
-        //            "VALUES (@Descripcion,@EsActivo,@FechaRegistro);";
-        //    await _data.GuardarDatos(sql,producto,_config.GetConnectionString("MySqlConnection"));
-        //CargarProductos();
+        string sql = "INSERT into producto (codigoBarra,marca,descripcion,idCategoria,stock,urlImagen,nombreImagen,precio,esActivo,fechaRegistro) " +
+                    "VALUES (@CodigoBarra,@Marca,@Descripcion,@IdCategoria,@Stock,@UrlImagen,@NombreImagen,@Precio,@EsActivo,@FechaRegistro);";
+            await _data.GuardarDatos(sql,producto,_config.GetConnectionString("MySqlConnection"));
+        CargarProductos();
     }
 
 }

@@ -14,7 +14,7 @@ namespace VentasWeb.Data
             }
         }
 
-        public async Task<List<T>> TraerTodasCategorias<T, U>(string sql, U parameters, string connectionString)
+        public async Task<List<T>> TraerDatos<T, U>(string sql, U parameters, string connectionString)
         {
             using (IDbConnection connection = new MySqlConnection(connectionString))
             {
@@ -23,23 +23,6 @@ namespace VentasWeb.Data
             }
         }
 
-        public async Task<List<T>> TraerTodasVentas<T, U>(string sql, U parameters, string connectionString)
-        {
-            using (IDbConnection connection = new MySqlConnection(connectionString))
-            {
-                var rows = await connection.QueryAsync<T>(sql, parameters);
-                return rows.ToList();
-            }
-        }
-
-        public async Task<List<T>> TraerTodosProductos<T, U>(string sql, U parameters, string connectionString)
-        {
-            using (IDbConnection connection = new MySqlConnection(connectionString))
-            {
-                var rows = await connection.QueryAsync<T>(sql, parameters);
-                return rows.ToList();
-            }
-        }
-
+       
     }
 }

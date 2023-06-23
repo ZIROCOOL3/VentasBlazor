@@ -18,6 +18,15 @@
 
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.css" rel="stylesheet">
+        <!-- masa blazor css style -->
+    <link href="_content/Masa.Blazor/css/masa-blazor.min.css" rel="stylesheet" />
+
+    <!--icon file,import need to use-->
+    <link href="https://cdn.masastack.com/npm/@("@mdi")/font@5.x/css/materialdesignicons.min.css" rel="stylesheet">
+    <link href="https://cdn.masastack.com/npm/materialicons/materialicons.css" rel="stylesheet">
+    <link href="https://cdn.masastack.com/npm/fontawesome/v5.0.13/css/all.css" rel="stylesheet">
+
+
 </head>
 <body>
     @RenderBody()
@@ -43,15 +52,19 @@
 
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.js"></script>
+    <script src="vendor/select2/select2.min.js"></script>
+    <script src="vendor/select2/es.min.js"></script>
 
-    
     <!-- ============================================================
     =SCRIPTS PARA ESTA PAGINA
     ===============================================================-->
     <script src="vendor/chart.js/Chart.min.js"></script>
-
+    <script src="https://cdn.masastack.com/npm/echarts/5.1.1/echarts.min.js"></script>
+        <!--js(should lay the end of file)-->
+    <script src="_content/BlazorComponent/js/blazor-component.js"></script>
     <!-- SOLO ES DE EJEMPLO - IGNORAR -->
     <script src="js/vistas/chart-bar-demo.js"></script>
-    <script src="js/vistas/chart-pie-demo.js"></script>
+    <script src="js/vistas/chart-pie-demo.js"></script
+    >
 </body>
 </html>
